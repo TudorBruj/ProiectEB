@@ -1,4 +1,9 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using ProiectEB.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<ProiectEBContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ProiectEBContext") ?? throw new InvalidOperationException("Connection string 'ProiectEBContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
