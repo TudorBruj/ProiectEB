@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +21,11 @@ namespace ProiectEB.Controllers
         // GET: Recenzies
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Recenzie.ToListAsync());
+            var recenzii = _context.Recenzie
+                .Include(r => r.Client)
+                .Include(r => r.Produs);
+
+            return View(await recenzii.ToListAsync());
         }
 
         // GET: Recenzies/Details/5
@@ -34,7 +37,10 @@ namespace ProiectEB.Controllers
             }
 
             var recenzie = await _context.Recenzie
+                .Include(r => r.Client)
+                .Include(r => r.Produs)
                 .FirstOrDefaultAsync(m => m.ID == id);
+
             if (recenzie == null)
             {
                 return NotFound();
@@ -46,12 +52,12 @@ namespace ProiectEB.Controllers
         // GET: Recenzies/Create
         public IActionResult Create()
         {
+            ViewData["IdClient"] = new SelectList(_context.Client, "Id", "Nume");
+            ViewData["IdProdus"] = new SelectList(_context.Produs, "Id", "Nume");
             return View();
         }
 
         // POST: Recenzies/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,IdClient,IdProdus,Evaluare,Comentariu")] Recenzie recenzie)
@@ -62,6 +68,8 @@ namespace ProiectEB.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["IdClient"] = new SelectList(_context.Client, "Id", "Nume", recenzie.IdClient);
+            ViewData["IdProdus"] = new SelectList(_context.Produs, "Id", "Nume", recenzie.IdProdus);
             return View(recenzie);
         }
 
@@ -78,12 +86,13 @@ namespace ProiectEB.Controllers
             {
                 return NotFound();
             }
+
+            ViewData["IdClient"] = new SelectList(_context.Client, "Id", "Nume", recenzie.IdClient);
+            ViewData["IdProdus"] = new SelectList(_context.Produs, "Id", "Nume", recenzie.IdProdus);
             return View(recenzie);
         }
 
         // POST: Recenzies/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID,IdClient,IdProdus,Evaluare,Comentariu")] Recenzie recenzie)
@@ -113,6 +122,9 @@ namespace ProiectEB.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["IdClient"] = new SelectList(_context.Client, "Id", "Nume", recenzie.IdClient);
+            ViewData["IdProdus"] = new SelectList(_context.Produs, "Id", "Nume", recenzie.IdProdus);
             return View(recenzie);
         }
 
@@ -125,7 +137,10 @@ namespace ProiectEB.Controllers
             }
 
             var recenzie = await _context.Recenzie
+                .Include(r => r.Client)
+                .Include(r => r.Produs)
                 .FirstOrDefaultAsync(m => m.ID == id);
+
             if (recenzie == null)
             {
                 return NotFound();
@@ -143,9 +158,9 @@ namespace ProiectEB.Controllers
             if (recenzie != null)
             {
                 _context.Recenzie.Remove(recenzie);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -155,3 +170,4 @@ namespace ProiectEB.Controllers
         }
     }
 }
+

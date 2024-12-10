@@ -13,13 +13,17 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="IdClient" class="control-label"></label>
-                <input asp-for="IdClient" class="form-control" />
+                <label asp-for="IdClient" class="control-label">Client</label>
+                <select asp-for="IdClient" class="form-control" asp-items="ViewBag.IdClient">
+                    <option value="">Selectează un client</option>
+                </select>
                 <span asp-validation-for="IdClient" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IdProdus" class="control-label"></label>
-                <input asp-for="IdProdus" class="form-control" />
+                <label asp-for="IdProdus" class="control-label">Produs</label>
+                <select asp-for="IdProdus" class="form-control" asp-items="ViewBag.IdProdus">
+                    <option value="">Selectează un produs</option>
+                </select>
                 <span asp-validation-for="IdProdus" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -29,9 +33,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="Comentariu" class="control-label"></label>
-                <input asp-for="Comentariu" class="form-control" />
+                <textarea asp-for="Comentariu" class="form-control"></textarea>
                 <span asp-validation-for="Comentariu" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -44,5 +49,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

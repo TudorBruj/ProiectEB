@@ -20,9 +20,39 @@ namespace ProiectEB.Controllers
         }
 
         // GET: Produs
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchName, decimal? minPrice, decimal? maxPrice, int? minQuantity)
         {
-            return View(await _context.Produs.ToListAsync());
+            // Query-ul pentru produse incluzând Recenzii și Stoc
+            var produse = _context.Produs
+                                  .Include(p => p.Recenzii)
+                                  .Include(p => p.Stoc)
+                                  .AsQueryable();
+
+            // Filtrare după Nume
+            if (!string.IsNullOrEmpty(searchName))
+            {
+                produse = produse.Where(p => p.Nume.Contains(searchName));
+            }
+
+            // Filtrare după Preț minim
+            if (minPrice.HasValue)
+            {
+                produse = produse.Where(p => p.Pret >= minPrice.Value);
+            }
+
+            // Filtrare după Preț maxim
+            if (maxPrice.HasValue)
+            {
+                produse = produse.Where(p => p.Pret <= maxPrice.Value);
+            }
+
+            // Filtrare după Cantitate minimă
+            if (minQuantity.HasValue)
+            {
+                produse = produse.Where(p => p.Cantitate >= minQuantity.Value);
+            }
+
+            return View(await produse.ToListAsync());
         }
 
         // GET: Produs/Details/5
@@ -34,7 +64,10 @@ namespace ProiectEB.Controllers
             }
 
             var produs = await _context.Produs
+                .Include(p => p.Recenzii)
+                .Include(p => p.Stoc)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (produs == null)
             {
                 return NotFound();
@@ -50,8 +83,6 @@ namespace ProiectEB.Controllers
         }
 
         // POST: Produs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nume,Descriere,Pret,Cantitate")] Produs produs)
@@ -82,8 +113,6 @@ namespace ProiectEB.Controllers
         }
 
         // POST: Produs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nume,Descriere,Pret,Cantitate")] Produs produs)
@@ -126,6 +155,7 @@ namespace ProiectEB.Controllers
 
             var produs = await _context.Produs
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (produs == null)
             {
                 return NotFound();
@@ -143,9 +173,9 @@ namespace ProiectEB.Controllers
             if (produs != null)
             {
                 _context.Produs.Remove(produs);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

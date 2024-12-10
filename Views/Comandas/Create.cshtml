@@ -12,20 +12,27 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
-                <label asp-for="ClientId" class="control-label"></label>
-                <select asp-for="ClientId" class ="form-control" asp-items="ViewBag.ClientId"></select>
+                <label asp-for="ClientId" class="control-label">Client</label>
+                <select asp-for="ClientId" class="form-control" asp-items="ViewBag.ClientId">
+                    <option value="">Selectează un client</option>
+                </select>
+                <span asp-validation-for="ClientId" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="DataComenzii" class="control-label"></label>
+                <label asp-for="DataComenzii" class="control-label">Data Comenzii</label>
                 <input asp-for="DataComenzii" class="form-control" />
                 <span asp-validation-for="DataComenzii" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="TotalPlatit" class="control-label"></label>
+                <label asp-for="TotalPlatit" class="control-label">Total Plătit</label>
                 <input asp-for="TotalPlatit" class="form-control" />
                 <span asp-validation-for="TotalPlatit" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -38,5 +45,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

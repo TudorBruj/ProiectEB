@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -20,9 +18,25 @@ namespace ProiectEB.Controllers
         }
 
         // GET: Stocs
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchLocation, int? minQuantity)
         {
-            return View(await _context.Stoc.ToListAsync());
+            var stocuri = _context.Stoc
+                                  .Include(s => s.Produs)
+                                  .AsQueryable();
+
+            // Filtrare după locație depozit
+            if (!string.IsNullOrEmpty(searchLocation))
+            {
+                stocuri = stocuri.Where(s => s.LocatieDepozit.Contains(searchLocation));
+            }
+
+            // Filtrare după cantitate minimă
+            if (minQuantity.HasValue)
+            {
+                stocuri = stocuri.Where(s => s.Cantitate >= minQuantity.Value);
+            }
+
+            return View(await stocuri.ToListAsync());
         }
 
         // GET: Stocs/Details/5
@@ -34,7 +48,9 @@ namespace ProiectEB.Controllers
             }
 
             var stoc = await _context.Stoc
+                .Include(s => s.Produs)
                 .FirstOrDefaultAsync(m => m.ID == id);
+
             if (stoc == null)
             {
                 return NotFound();
@@ -46,12 +62,11 @@ namespace ProiectEB.Controllers
         // GET: Stocs/Create
         public IActionResult Create()
         {
+            ViewData["IdProdus"] = new SelectList(_context.Produs, "Id", "Nume");
             return View();
         }
 
         // POST: Stocs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,IdProdus,LocatieDepozit,Cantitate")] Stoc stoc)
@@ -62,6 +77,8 @@ namespace ProiectEB.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["IdProdus"] = new SelectList(_context.Produs, "Id", "Nume", stoc.IdProdus);
             return View(stoc);
         }
 
@@ -78,12 +95,12 @@ namespace ProiectEB.Controllers
             {
                 return NotFound();
             }
+
+            ViewData["IdProdus"] = new SelectList(_context.Produs, "Id", "Nume", stoc.IdProdus);
             return View(stoc);
         }
 
         // POST: Stocs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID,IdProdus,LocatieDepozit,Cantitate")] Stoc stoc)
@@ -113,6 +130,8 @@ namespace ProiectEB.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["IdProdus"] = new SelectList(_context.Produs, "Id", "Nume", stoc.IdProdus);
             return View(stoc);
         }
 
@@ -125,7 +144,9 @@ namespace ProiectEB.Controllers
             }
 
             var stoc = await _context.Stoc
+                .Include(s => s.Produs)
                 .FirstOrDefaultAsync(m => m.ID == id);
+
             if (stoc == null)
             {
                 return NotFound();
@@ -143,9 +164,9 @@ namespace ProiectEB.Controllers
             if (stoc != null)
             {
                 _context.Stoc.Remove(stoc);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

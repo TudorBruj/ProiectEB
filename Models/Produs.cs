@@ -14,5 +14,9 @@ namespace ProiectEB.Models
         public decimal Pret { get; set; }
 
         public int Cantitate { get; set; }
+
+        public ICollection<Recenzie>? Recenzii { get; set; }
+
+        public Stoc? Stoc { get; set; }
     }
 }

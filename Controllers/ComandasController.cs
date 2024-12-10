@@ -20,10 +20,28 @@ namespace ProiectEB.Controllers
         }
 
         // GET: Comandas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchClient, string searchDate)
         {
-            var proiectEBContext = _context.Comanda.Include(c => c.Client);
-            return View(await proiectEBContext.ToListAsync());
+            // Obținem comenzile incluzând datele clientului
+            var comenzi = _context.Comanda.Include(c => c.Client).AsQueryable();
+
+            // Filtrare după Numele Clientului
+            if (!string.IsNullOrEmpty(searchClient))
+            {
+                comenzi = comenzi.Where(c => c.Client.Nume.Contains(searchClient));
+            }
+
+            // Filtrare după Data Comenzii
+            if (!string.IsNullOrEmpty(searchDate))
+            {
+                if (DateTime.TryParse(searchDate, out DateTime parsedDate))
+                {
+                    comenzi = comenzi.Where(c => c.DataComenzii.Date == parsedDate.Date);
+                }
+            }
+
+            // Returnăm rezultatele către View
+            return View(await comenzi.ToListAsync());
         }
 
         // GET: Comandas/Details/5
@@ -48,13 +66,11 @@ namespace ProiectEB.Controllers
         // GET: Comandas/Create
         public IActionResult Create()
         {
-            ViewData["ClientId"] = new SelectList(_context.Client, "Id", "Id");
+            ViewData["ClientId"] = new SelectList(_context.Client, "Id", "Nume");
             return View();
         }
 
         // POST: Comandas/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ClientId,DataComenzii,TotalPlatit")] Comanda comanda)
@@ -65,7 +81,7 @@ namespace ProiectEB.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClientId"] = new SelectList(_context.Client, "Id", "Id", comanda.ClientId);
+            ViewData["ClientId"] = new SelectList(_context.Client, "Id", "Nume", comanda.ClientId);
             return View(comanda);
         }
 
@@ -82,13 +98,11 @@ namespace ProiectEB.Controllers
             {
                 return NotFound();
             }
-            ViewData["ClientId"] = new SelectList(_context.Client, "Id", "Id", comanda.ClientId);
+            ViewData["ClientId"] = new SelectList(_context.Client, "Id", "Nume", comanda.ClientId);
             return View(comanda);
         }
 
         // POST: Comandas/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,ClientId,DataComenzii,TotalPlatit")] Comanda comanda)
@@ -118,7 +132,7 @@ namespace ProiectEB.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClientId"] = new SelectList(_context.Client, "Id", "Id", comanda.ClientId);
+            ViewData["ClientId"] = new SelectList(_context.Client, "Id", "Nume", comanda.ClientId);
             return View(comanda);
         }
 
@@ -162,3 +176,4 @@ namespace ProiectEB.Controllers
         }
     }
 }
+

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProiectEB.Data;
 using ProiectEB.Models;
@@ -20,9 +19,20 @@ namespace ProiectEB.Controllers
         }
 
         // GET: Clients
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.Client.ToListAsync());
+            // Obținem toți clienții
+            var clients = from c in _context.Client
+                          select c;
+
+            // Filtrăm după Nume sau Prenume dacă searchString nu este gol
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                clients = clients.Where(s => s.Nume.Contains(searchString) || s.Prenume.Contains(searchString));
+            }
+
+            // Returnăm lista filtrată sau completă
+            return View(await clients.ToListAsync());
         }
 
         // GET: Clients/Details/5
@@ -50,8 +60,6 @@ namespace ProiectEB.Controllers
         }
 
         // POST: Clients/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nume,Prenume,Adresa,Email,NumarTelefon")] Client client)
@@ -82,8 +90,6 @@ namespace ProiectEB.Controllers
         }
 
         // POST: Clients/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nume,Prenume,Adresa,Email,NumarTelefon")] Client client)
