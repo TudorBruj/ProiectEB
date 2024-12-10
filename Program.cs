@@ -1,12 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ProiectEB.Data;
+using ProiectEB.Hubs;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ProiectEBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ProiectEBContext") ?? throw new InvalidOperationException("Connection string 'ProiectEBContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSignalR();
+
+builder.Services.AddSingleton<ProiectEB.Services.ChatBotService>();
 
 var app = builder.Build();
 
@@ -28,5 +33,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapHub<ChatHub>("/chatHub");
 
 app.Run();
