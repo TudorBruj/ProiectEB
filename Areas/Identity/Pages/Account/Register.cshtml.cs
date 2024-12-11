@@ -38,7 +38,7 @@ namespace ProiectEB.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            ProiectEBContext context) // Injectăm DbContext
+            ProiectEBContext context)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -46,7 +46,7 @@ namespace ProiectEB.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _context = context; // Inițializăm contextul bazei de date
+            _context = context;
         }
 
         [BindProperty]
@@ -97,7 +97,6 @@ namespace ProiectEB.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    // Adăugăm Client în baza de date
                     var newClient = new Client
                     {
                         Nume = "Nume implicit",

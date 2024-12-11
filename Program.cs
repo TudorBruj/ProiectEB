@@ -19,7 +19,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.AccessDeniedPath = "/Home/AccessDenied";
-    options.LoginPath = "/Identity/Account/Login"; // În caz că nu sunt logați
+    options.LoginPath = "/Identity/Account/Login";
     options.SlidingExpiration = true;
 });
 
@@ -48,7 +48,7 @@ using (var scope = app.Services.CreateScope())
     }
 
     string adminEmail = "admin@admin.com";
-    string adminPassword = "Admin123!";
+    string adminPassword = "Woodoo123!";
 
     if (await userManager.FindByEmailAsync(adminEmail) == null)
     {
