@@ -1,8 +1,24 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Bine ai venit la Retail-Go";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container text-center mt-5">
+    <h1 class="display-4 text-warning fw-bold">Bine ai venit la Retail-Go!</h1>
+
+
+    <p class="container lead mt-4 text-title">
+        Platforma ta preferată pentru a explora, comanda și recenza produsele tale preferate!
+    </p>
+
+    <hr class="my-4 bg-warning" />
+
+    <div class="mt-4">
+        <a class="btn btn-lg btn-outline-warning me-2" asp-controller="Produs" asp-action="Index">
+            Descoperă Produsele
+        </a>
+        <a class="btn btn-lg btn-outline-light" asp-controller="Home" asp-action="Chat">
+            Discută cu ChatBot-ul
+        </a>
+    </div>
 </div>
+

@@ -1,22 +1,71 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
+﻿/* Fundal general - gri deschis */
 body {
-  margin-bottom: 60px;
+    background-color: #f8f9fa; /* Gri foarte deschis */
+    color: #2c3e50; /* Text albastru-gri închis */
+}
+
+/* Container de Welcome */
+.welcome-container {
+    padding: 50px 20px;
+    background-color: #ffffff; /* Alb pentru contrast */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Titluri și text */
+h1, h2, h3 {
+    color: #f39c12; /* Portocaliu pentru titluri */
+    font-weight: bold;
+}
+
+p.lead {
+    color: #555555; /* Gri închis pentru descrieri */
+    font-size: 1.25rem;
+}
+
+/* Linie separatoare */
+hr {
+    height: 3px;
+    border: none;
+    background-color: #f39c12; /* Portocaliu */
+}
+
+/* Butoane */
+.btn-outline-warning {
+    color: #f39c12;
+    border-color: #f39c12;
+}
+
+    .btn-outline-warning:hover {
+        background-color: #f39c12;
+        color: #fff;
+    }
+
+.btn-outline-light {
+    color: #2c3e50;
+    border-color: #2c3e50;
+}
+
+    .btn-outline-light:hover {
+        background-color: #2c3e50;
+        color: #fff;
+    }
+
+/* Link-uri */
+a {
+    color: #f39c12; /* Portocaliu pentru link-uri */
+    text-decoration: none;
+}
+
+    a:hover {
+        color: #e67e22; /* Portocaliu mai închis la hover */
+        text-decoration: underline;
+    }
+
+/* Footer */
+footer {
+    background-color: #2c3e50; /* Gri închis */
+    color: #ecf0f1; /* Text deschis */
+    padding: 10px 0;
+    text-align: center;
 }

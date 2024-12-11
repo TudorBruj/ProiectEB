@@ -1,25 +1,25 @@
 ﻿@model IEnumerable<ProiectEB.Models.Stoc>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Stocuri";
 }
 
-<h1>Stocuri</h1>
+<h1 class="text-warning fw-bold">Stocuri</h1>
 
-<form asp-action="Index" method="get" class="form-inline mb-3">
-    <div class="form-group mr-2">
+<form asp-action="Index" method="get" class="row g-3 mb-4">
+    <div class="col-md-4">
         <input type="text" name="searchLocation" class="form-control" placeholder="Locație depozit" />
     </div>
-    <div class="form-group mr-2">
+    <div class="col-md-4">
         <input type="number" name="minQuantity" class="form-control" placeholder="Cantitate minimă" />
     </div>
-    <button type="submit" class="btn btn-primary">Filtrează</button>
+    <div class="col-md-2 d-grid">
+        <button type="submit" class="btn btn-primary">Filtrează</button>
+    </div>
 </form>
-
 <p>
     <a asp-action="Create" class="btn btn-success">Adaugă Stoc Nou</a>
 </p>
-
 <table class="table table-striped">
     <thead>
         <tr>
@@ -43,8 +43,8 @@
                     @Html.DisplayFor(modelItem => item.Cantitate)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-warning">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm btn-info">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm btn-info">Details</a>
                     <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm btn-danger">Delete</a>
                 </td>
             </tr>

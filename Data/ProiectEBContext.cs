@@ -2,19 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ProiectEB.Models;
 
 namespace ProiectEB.Data
 {
-    public class ProiectEBContext : DbContext
+    public class ProiectEBContext : IdentityDbContext<IdentityUser>
     {
-        public ProiectEBContext (DbContextOptions<ProiectEBContext> options)
+        public ProiectEBContext(DbContextOptions<ProiectEBContext> options)
             : base(options)
         {
         }
 
-        public DbSet<ProiectEB.Models.Client> Client { get; set; } = default!;
+        public DbSet<Client> Client { get; set; }
         public DbSet<ProiectEB.Models.Comanda> Comanda { get; set; } = default!;
         public DbSet<ProiectEB.Models.Produs> Produs { get; set; } = default!;
         public DbSet<ProiectEB.Models.Recenzie> Recenzie { get; set; } = default!;

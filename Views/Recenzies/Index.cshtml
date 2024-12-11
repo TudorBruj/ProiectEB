@@ -1,53 +1,37 @@
 ﻿@model IEnumerable<ProiectEB.Models.Recenzie>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Recenzii";
 }
 
-<h1>Index</h1>
-
+<h1 class="text-warning fw-bold">Recenzii</h1>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-success">Adaugă Recenzie Nouă</a>
 </p>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.IdClient)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdProdus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Evaluare)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Comentariu)
-            </th>
-            <th></th>
+            <th>Client</th>
+            <th>Produs</th>
+            <th>Evaluare</th>
+            <th>@Html.DisplayNameFor(model => model.Comentariu)</th>
+            <th>Acțiuni</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdClient)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdProdus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Evaluare)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comentariu)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Client.Nume)</td>
+                <td>@Html.DisplayFor(modelItem => item.Produs.Nume)</td>
+                <td>@($"{item.Evaluare}/5")</td>
+                <td>@Html.DisplayFor(modelItem => item.Comentariu)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-sm btn-info">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

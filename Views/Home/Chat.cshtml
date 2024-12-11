@@ -1,36 +1,40 @@
 ﻿@{
     ViewData["Title"] = "Chat";
 }
-<h1>@ViewData["Title"]</h1>
-<div class="alert alert-info" role="alert">
-    🤖 Salut! Sunt ChatBot-ul magazinului. Pot să răspund la întrebări precum: "Care sunt metodele de plată?" sau "Care este programul de livrare?".
-</div>
-<div class="container">
-    <div class="row">&nbsp;</div>
-    <div class="row">
-        <div class="col-2">Utilizator</div>
-        <div class="col-4"><input type="text" id="userInput" class="form-control" placeholder="Introdu numele tău..." /></div>
+<div class="container mt-5">
+    <h1 class="text-warning text-center fw-bold mb-4">@ViewData["Title"]</h1>
+    <div class="alert alert-info text-center" role="alert">
+        🤖 Salut! Sunt <strong>ChatBot-ul</strong> magazinului. Pot să răspund la întrebări precum:
+        <em>"Care sunt metodele de plată?"</em> sau <em>"Care este programul de livrare?"</em>.
     </div>
-    <div class="row">
-        <div class="col-2">Mesaj</div>
-        <div class="col-4"><input type="text" id="messageInput" class="form-control" placeholder="Scrie un mesaj..." /></div>
-    </div>
-    <div class="row">&nbsp;</div>
-    <div class="row">
-        <div class="col-6">
-            <input type="button" id="sendButton" class="btn btn-primary" value="Trimite mesaj" />
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-2 text-end fw-bold align-self-center">Utilizator:</div>
+                <div class="col-md-6">
+                    <input type="text" id="userInput" class="form-control" placeholder="Introdu numele tău..." />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-2 text-end fw-bold align-self-center">Mesaj:</div>
+                <div class="col-md-6">
+                    <input type="text" id="messageInput" class="form-control" placeholder="Scrie un mesaj..." />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 offset-md-2 d-grid">
+                    <input type="button" id="sendButton" class="btn btn-primary btn-lg" value="Trimite mesaj" />
+                </div>
+            </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-12">
-        <hr />
-    </div>
-</div>
-<div class="row">
-    <div class="col-12">
-        <div id="chatWindow" style="height: 300px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9;">
-            <ul id="messagesList" style="list-style-type: none; padding: 0; margin: 0;"></ul>
+
+    <div class="card shadow-lg">
+        <div class="card-header bg-warning text-white text-center fw-bold">
+            Istoric Mesaje
+        </div>
+        <div class="card-body p-3" style="max-height: 300px; overflow-y: auto; background-color: #f9f9f9;">
+            <ul id="messagesList" class="list-unstyled mb-0"></ul>
         </div>
     </div>
 </div>
